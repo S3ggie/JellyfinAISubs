@@ -1,0 +1,10 @@
+services:
+  ai-subs:
+    build:
+      context: ../backend
+    container_name: ai-subs
+    ports:
+      - "8099:8099"
+    volumes:
+      - /srv/media:/media
+    restart: unless-stopped
