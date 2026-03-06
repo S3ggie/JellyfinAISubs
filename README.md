@@ -7,7 +7,7 @@ End-to-end project for AI-generated subtitles/lyrics with Jellyfin integration.
 - `backend/` → portable Python service + CLI (`ai-subs`) that generates:
   - `.lrc` for audio/music items
   - `.srt` for video/other items
-- `jellyfin-plugin/` → Jellyfin plugin scaffold to add UI actions and call backend API
+- `jellyfin-plugin/` → Jellyfin plugin scaffold + repo-manifest template for install catalog
 - `deploy/` → Docker Compose for running the backend on a server
 - `scripts/bootstrap.sh` → one-command Docker bootstrap
 

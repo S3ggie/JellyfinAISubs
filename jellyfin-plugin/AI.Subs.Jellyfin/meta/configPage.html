@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>AI Subs Jellyfin</title>
+</head>
+<body>
+  <h2>AI Subs Jellyfin</h2>
+  <p>Configure backend URL for AI subtitle generation.</p>
+  <label>Backend Base URL</label>
+  <input id="backendUrl" type="text" style="width: 100%;" placeholder="http://127.0.0.1:8099" />
+  <br/><br/>
+  <button id="saveBtn">Save</button>
+
+  <script>
+    async function loadConfig() {
+      const cfg = await ApiClient.getPluginConfiguration('9f2fa9f5-4cab-4bb2-9f6c-cf6b4a9a9d8e');
+      document.getElementById('backendUrl').value = cfg.BackendBaseUrl || 'http://127.0.0.1:8099';
+    }
+
+    async function saveConfig() {
+      const cfg = await ApiClient.getPluginConfiguration('9f2fa9f5-4cab-4bb2-9f6c-cf6b4a9a9d8e');
+      cfg.BackendBaseUrl = document.getElementById('backendUrl').value.trim();
+      await ApiClient.updatePluginConfiguration('9f2fa9f5-4cab-4bb2-9f6c-cf6b4a9a9d8e', cfg);
+      Dashboard.alert('Saved');
+    }
+
+    document.getElementById('saveBtn').addEventListener('click', saveConfig);
+    loadConfig();
+  </script>
+</body>
+</html>

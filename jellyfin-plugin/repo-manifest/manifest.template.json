@@ -1,0 +1,26 @@
+[
+  {
+    "guid": "9f2fa9f5-4cab-4bb2-9f6c-cf6b4a9a9d8e",
+    "name": "AI Subs Jellyfin",
+    "description": "Adds AI subtitle/lyrics generation actions and calls AI-Subs backend.",
+    "overview": "Generate .srt for video and .lrc for audio items using your local AI-Subs backend.",
+    "owner": "S3ggie",
+    "category": "General",
+    "versions": [
+      {
+        "version": "0.1.0.0",
+        "changelog": "Initial release scaffold",
+        "targetAbi": "10.10.0.0",
+        "sourceUrl": "https://github.com/S3ggie/JellyfinAISubs",
+        "checksum": "<SHA256_OF_ZIP>",
+        "timestamp": "2026-03-06T23:30:00Z",
+        "links": [
+          {
+            "name": "Zip",
+            "url": "https://github.com/S3ggie/JellyfinAISubs/releases/download/v0.1.0/AI.Subs.Jellyfin_0.1.0.0.zip"
+          }
+        ]
+      }
+    ]
+  }
+]
