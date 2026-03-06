@@ -14,7 +14,9 @@ End-to-end project for AI-generated subtitles/lyrics with Jellyfin integration.
 ## One-command run (recommended)
 
 ```bash
-./scripts/bootstrap.sh
+cd deploy
+docker compose pull
+docker compose up -d
 ```
 
 Then test:
@@ -42,6 +44,10 @@ ai-subs serve --host 0.0.0.0 --port 8099
 
 `deploy/docker-compose.yml` mounts `/srv/media` from host to `/media` in container.
 Update this path to match your server media root.
+
+Backend image is published to GHCR by GitHub Actions workflow:
+- `.github/workflows/publish-backend-image.yml`
+- Image: `ghcr.io/s3ggie/jellyfinaisubs-backend:latest`
 
 ## API endpoint
 

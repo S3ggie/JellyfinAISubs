@@ -1,7 +1,6 @@
 services:
   ai-subs:
-    build:
-      context: ../backend
+    image: ghcr.io/s3ggie/jellyfinaisubs-backend:latest
     container_name: ai-subs
     ports:
       - "8099:8099"
