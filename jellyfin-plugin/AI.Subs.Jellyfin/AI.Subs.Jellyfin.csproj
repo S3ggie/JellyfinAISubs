@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>AI.Subs.Jellyfin</AssemblyName>
+    <RootNamespace>AISubsJellyfin</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Jellyfin.Model" Version="10.10.0" />
+    <PackageReference Include="MediaBrowser.Common" Version="10.10.0" />
+    <PackageReference Include="MediaBrowser.Controller" Version="10.10.0" />
+  </ItemGroup>
+</Project>

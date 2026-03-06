@@ -18,6 +18,7 @@ def build_parser() -> argparse.ArgumentParser:
     g.add_argument("--model", default="small")
     g.add_argument("--device", default="cpu")
     g.add_argument("--language")
+    g.add_argument("--no-isolate-vocals", action="store_true")
 
     s = sub.add_parser("serve", help="Run API server")
     s.add_argument("--host", default="0.0.0.0")
@@ -36,6 +37,7 @@ def main() -> int:
             model=args.model,
             device=args.device,
             language=args.language,
+            isolate_vocals=not args.no_isolate_vocals,
         )
         print(out)
         return 0

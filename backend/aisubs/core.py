@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -34,6 +35,43 @@ def detect_media_kind(path: Path) -> str:
     streams = data.get("streams", [])
     has_video = any(s.get("codec_type") == "video" and s.get("disposition", {}).get("attached_pic", 0) == 0 for s in streams)
     return "video" if has_video else "audio"
+
+
+def extract_audio_wav(input_path: Path, out_wav: Path) -> None:
+    _run([
+        "ffmpeg",
+        "-y",
+        "-i",
+        str(input_path),
+        "-vn",
+        "-ac",
+        "1",
+        "-ar",
+        "16000",
+        str(out_wav),
+    ])
+
+
+def isolate_vocals_demucs(input_wav: Path, out_wav: Path, demucs_device: str = "cpu") -> None:
+    work_dir = out_wav.parent / "demucs_tmp"
+    work_dir.mkdir(parents=True, exist_ok=True)
+    _run([
+        "python",
+        "-m",
+        "demucs.separate",
+        "-n",
+        "htdemucs",
+        "--two-stems=vocals",
+        "--device",
+        demucs_device,
+        "-o",
+        str(work_dir),
+        str(input_wav),
+    ])
+    vocals = work_dir / "htdemucs" / input_wav.stem / "vocals.wav"
+    if not vocals.exists():
+        raise RuntimeError("Demucs did not produce vocals.wav")
+    out_wav.write_bytes(vocals.read_bytes())
 
 
 def fmt_srt(seconds: float) -> str:
@@ -77,15 +115,38 @@ def transcribe(path: Path, model: str = "small", device: str = "cpu", language: 
     return out
 
 
-def generate(path: Path, out_format: str = "auto", model: str = "small", device: str = "cpu", language: str | None = None) -> Path:
+def generate(
+    path: Path,
+    out_format: str = "auto",
+    model: str = "small",
+    device: str = "cpu",
+    language: str | None = None,
+    isolate_vocals: bool = True,
+) -> Path:
     if not path.exists():
         raise FileNotFoundError(str(path))
 
+    kind = detect_media_kind(path)
     if out_format == "auto":
-        kind = detect_media_kind(path)
         out_format = "lrc" if kind == "audio" else "srt"
 
-    segments = transcribe(path, model=model, device=device, language=language)
+    with tempfile.TemporaryDirectory(prefix="ai-subs-") as td:
+        tmp = Path(td)
+        source_wav = tmp / "source.wav"
+        extract_audio_wav(path, source_wav)
+
+        asr_input = source_wav
+        if out_format == "lrc" and isolate_vocals:
+            isolated = tmp / "vocals.wav"
+            try:
+                isolate_vocals_demucs(source_wav, isolated, demucs_device="cpu")
+                asr_input = isolated
+            except Exception:
+                # graceful fallback to non-isolated audio
+                asr_input = source_wav
+
+        segments = transcribe(asr_input, model=model, device=device, language=language)
+
     output = path.with_suffix(f".{out_format}")
 
     if out_format == "srt":

@@ -16,6 +16,7 @@ class GenerateRequest(BaseModel):
     model: str = "small"
     device: str = "cpu"
     language: str | None = None
+    isolate_vocals: bool = True
 
 
 @app.get("/health")
@@ -32,6 +33,7 @@ def generate_endpoint(req: GenerateRequest) -> dict:
             model=req.model,
             device=req.device,
             language=req.language,
+            isolate_vocals=req.isolate_vocals,
         )
         return {"ok": True, "output": str(out)}
     except Exception as exc:
