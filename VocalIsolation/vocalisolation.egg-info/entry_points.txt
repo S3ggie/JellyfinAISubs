@@ -1,0 +1,2 @@
+[console_scripts]
+viso = viso.cli:main

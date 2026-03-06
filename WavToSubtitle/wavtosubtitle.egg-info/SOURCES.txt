@@ -1,0 +1,12 @@
+README.md
+pyproject.toml
+tests/test_cli_mocked.py
+tests/test_formatters.py
+wavsub/__init__.py
+wavsub/cli.py
+wavtosubtitle.egg-info/PKG-INFO
+wavtosubtitle.egg-info/SOURCES.txt
+wavtosubtitle.egg-info/dependency_links.txt
+wavtosubtitle.egg-info/entry_points.txt
+wavtosubtitle.egg-info/requires.txt
+wavtosubtitle.egg-info/top_level.txt

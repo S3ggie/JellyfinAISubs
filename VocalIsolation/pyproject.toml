@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vocalisolation"
+version = "0.1.0"
+description = "CLI tool to isolate vocals from media files"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "demucs>=4.0.0",
+]
+
+[project.scripts]
+viso = "viso.cli:main"
+
+[tool.setuptools]
+packages = ["viso"]
